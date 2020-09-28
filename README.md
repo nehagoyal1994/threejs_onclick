@@ -1,4 +1,4 @@
 # threejs_onclick
 
 
-please use shift key whiling clicking the cursor to get the result.
+please use shift key while clicking the cursor to get the result.
