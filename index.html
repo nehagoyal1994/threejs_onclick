@@ -1,4 +1,5 @@
 	
+	
 <html>
   <head>
     <meta charset="UTF-8" />    
@@ -24,6 +25,10 @@
         renderer = new THREE.WebGLRenderer({antialias : true});
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
+
+        count = 0;
+
+        
         // listenig to the clicks of mouse
         renderer.domElement.onclick = function(e){
 
@@ -55,10 +60,7 @@
           geometry[3] = new THREE.TorusKnotBufferGeometry( 10, 3, 100, 16 );    //torus knot(radius, tubeRadius, tubularSegments, radialSegments)
           geometry[4] = new THREE.OctahedronBufferGeometry(10);    //octahedron(radius)    8 sides
           geometry[5] = new THREE.ConeBufferGeometry( 6, 20, 18 );   // cone(radius, height, radialSegments)
-          geometry[6] = new THREE.RingBufferGeometry( 10, 20, 18 );   // ring(innerRadius, outerRadius, thetaSegments)
-          
-          
-           
+          geometry[6] = new THREE.RingBufferGeometry( 10, 20, 18 );   // ring(innerRadius, outerRadius, thetaSegments)          
 
 
           material = new THREE.MeshStandardMaterial({ color: 0xffffff });
@@ -68,17 +70,55 @@
           geo.material.color = new THREE.Color(0xffffff * Math.random());     //random color at every click
           geo.material.needsUpdate = true;
 
-          //sphere_geometry = new THREE.SphereGeometry( 20, 32, 32 );
-          //sphere = new THREE.Mesh(sphere_geometry, material);
-          //sphere.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
-
-
           scene.add(geo);
-          //scene.add( sphere);
-        
-
+          
         };
+        // listening to the moving of the mouse
+        /*renderer.domElement.onmousemove = function(e){
 
+          if (!e.shiftKey) {
+            e.preventDefault();
+            return false;
+            }
+          
+          console.log('yes! you clicked!');
+
+          pixel_coords = new THREE.Vector2(e.clientX,e.clientY);     //screen space
+          console.log('Pixel coordinates', pixel_coords);
+
+          vp_coords = new THREE.Vector2( 
+              ( pixel_coords.x / window.innerWidth ) * 2 - 1, // X
+              - ( pixel_coords.y / window.innerHeight ) * 2 + 1 ); // y
+          console.log('Viewport coordinates', vp_coords);
+
+          vp_coords_3d_near = new THREE.Vector3(vp_coords.x, vp_coords.y, 0);  //for zNear
+
+          raycaster = new THREE.Raycaster();
+          raycaster.setFromCamera(vp_coords_3d_near , camera);
+          intersects = raycaster.intersectObject( invisible_plane);
+
+          geometry = []    //creating list
+
+          geometry[1] = new THREE.BoxBufferGeometry( 20, 20, 20 );   //cube(width, height, depth)
+          geometry[2] = new THREE.SphereBufferGeometry(10,32,32);    //sphere(radius, widthSegments, heightSegments)
+          geometry[3] = new THREE.TorusKnotBufferGeometry( 10, 3, 100, 16 );    //torus knot(radius, tubeRadius, tubularSegments, radialSegments)
+          geometry[4] = new THREE.OctahedronBufferGeometry(10);    //octahedron(radius)    8 sides
+          geometry[5] = new THREE.ConeBufferGeometry( 6, 20, 18 );   // cone(radius, height, radialSegments)
+          geometry[6] = new THREE.RingBufferGeometry( 10, 20, 18 );   // ring(innerRadius, outerRadius, thetaSegments)
+          
+
+          material = new THREE.MeshStandardMaterial({ color: 0xffffff, wireframe: true });
+          geo = new THREE.Mesh( geometry[(Math.floor(Math.random() *  (6) + 1))], material );   // getting different geometries on random
+          geo.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);   //geometry position on invisble plane
+          geo.material.color = new THREE.Color(0xffffff * Math.random());     //random color at every click
+          geo.material.needsUpdate = true;
+          scene.add(geo);
+
+          count++;
+          console.log('count',count);
+          
+        };
+        */
 
         ambientLight = new THREE.AmbientLight( 0x404040 );
         scene.add( ambientLight );
@@ -107,6 +147,8 @@
  
         controls.update();
         renderer.render( scene, camera );
+        console.log('render');
+
  
       };
     </script>
